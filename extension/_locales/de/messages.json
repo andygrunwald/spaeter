@@ -44,7 +44,7 @@
   "tagLabel": { "message": "Tag" },
   "templateInvalid": { "message": "Jeder Aufgabenname muss %s genau einmal enthalten." },
   "saveButton": { "message": "Speichern" },
-  "saved": { "message": "Gespeichert." },
+  "saved": { "message": "Gespeichert. Du kannst diesen Tab jetzt schließen." },
 
   "titleLabel": { "message": "Titel" },
   "previewLabel": { "message": "Aufgabe" },

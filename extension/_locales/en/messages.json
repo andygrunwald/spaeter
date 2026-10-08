@@ -44,7 +44,7 @@
   "tagLabel": { "message": "Tag" },
   "templateInvalid": { "message": "Every task name must contain %s exactly once." },
   "saveButton": { "message": "Save" },
-  "saved": { "message": "Saved." },
+  "saved": { "message": "Saved. You can close this tab now." },
 
   "titleLabel": { "message": "Title" },
   "previewLabel": { "message": "Task" },
