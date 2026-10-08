@@ -10,6 +10,9 @@ Started directly, it shows a menu for the setup and settings (setup.cherri).
 */
 
 #define name Später
+// Shortcuts icons can't be custom images; Apple's built-in cow glyph is the closest to our 🐮 icon.
+#define glyph cow
+#define color taupe
 #define inputs url, webpage, text
 #define from sharesheet
 
