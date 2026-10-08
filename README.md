@@ -7,18 +7,16 @@ or from the Share functionality on your iPhone.
 ## What it does
 
 You find an interesting link while browsing, or a friend sends one via WhatsApp, Signal
-or Discord, but you don't have time or motivation to consume it right now. *Später* sorts the
-link into one of three consumption categories, **Read** (articles), **Watch** (videos)
-or **Listen** (podcasts), and turns it into a task in the Remember The Milk list of your
-choice:
+or Discord, but you don't have time or motivation to consume it right now. *Später*
+sorts the link into one of three consumption categories, **Read** (articles), **Watch**
+(videos) or **Listen** (podcasts), and turns it into a task in the Remember The Milk
+list of your choice.
 
-| Type   | Link                                                                    | Task name                                                         | Tag      |
-|--------|-------------------------------------------------------------------------|-------------------------------------------------------------------|----------|
-| Listen | `https://open.spotify.com/episode/6fNv8trMNhqtbhbOBWkLNS`               | `Listen to "How Linux is built with Greg Kroah-Hartman"`          | `listen` |
-| Read   | `https://jeremymorrell.dev/blog/a-practitioners-guide-to-wide-events/`  | `Read "A Practitioner's Guide to Wide Events"`                    | `read`   |
-| Watch  | `https://www.youtube.com/watch?v=u3GjIXP9N0s`                           | `Watch "AWS Distinguished Eng: Learning From 3000 Incidents …"`   | `watch`  |
+The link is stored as the task's URL, and the task has no due date:
 
-The link is stored as the task's URL, and the task has no due date.
+![A task created by Später in Remember The Milk](docs/remember-the-milk.png)
+
+*Example with the German preset: task name `"…" lesen`, tag `lesen`.*
 
 *Später* comes in two flavours:
 
@@ -26,6 +24,14 @@ The link is stored as the task's URL, and the task has no due date.
 |-------------------------|----------------------------|
 | A button next to the address bar. Click it and the task will be created. | Share a link from Safari, YouTube, Spotify or any other app and pick *Später*. |
 | ![Später popup in Google Chrome](docs/google-chrome-extension.png) | *Screenshot coming soon.* <!-- Screenshot: docs/iphone.png --> |
+
+Task name and tag depend on the consumption category (examples with the English preset):
+
+| Type   | Link                                                                    | Task name                                                         | Tag      |
+|--------|-------------------------------------------------------------------------|-------------------------------------------------------------------|----------|
+| Listen | `https://open.spotify.com/episode/6fNv8trMNhqtbhbOBWkLNS`               | `Listen to "How Linux is built with Greg Kroah-Hartman"`          | `listen` |
+| Read   | `https://jeremymorrell.dev/blog/a-practitioners-guide-to-wide-events/`  | `Read "A Practitioner's Guide to Wide Events"`                    | `read`   |
+| Watch  | `https://www.youtube.com/watch?v=u3GjIXP9N0s`                           | `Watch "AWS Distinguished Eng: Learning From 3000 Incidents …"`   | `watch`  |
 
 ## Documentation
 
