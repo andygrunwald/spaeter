@@ -6,5 +6,7 @@ dist/
 .env
 .env.*
 *.pem
-# Exported shortcuts may contain secrets; commit signed, secret-free files deliberately with `git add -f`
+# Commit signed .shortcut files deliberately with `git add -f`
 *.shortcut
+# Config written by the "Später Setup" Shortcut; contains the RTM secret and token
+spaeter.json

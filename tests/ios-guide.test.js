@@ -1,10 +1,10 @@
-// The iPhone Shortcut can't run in CI, so this test keeps ios/SHORTCUT.md in sync
+// The iPhone Shortcuts can't run in CI, so this test keeps ios/SHORTCUT.md in sync
 // with the code the Chrome extension runs: type regexes, presets, signature strings
 // and the worked example.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { addTask, sign } from '../extension/lib/rtm.js';
+import { addTask, authUrl, getFrob, getLists, getToken, sign } from '../extension/lib/rtm.js';
 import { DOMAINS, PRESETS } from '../extension/lib/rules.js';
 
 const guide = await readFile(new URL('../ios/SHORTCUT.md', import.meta.url), 'utf8');
@@ -42,11 +42,17 @@ test('templates and tags match the presets in rules.js', () => {
   }
 });
 
+const signatureString = (params) => `{secret}${Object.keys(params).sort().map((key) => key + params[key]).join('')}`;
+const creds = { apiKey: '{apiKey}', secret: '{secret}', token: '{token}' };
+
 test('signature strings match what rtm.js signs', async () => {
-  // Run addTask with placeholder values; the signature string of each request
-  // built from those placeholders is exactly the template the guide must show.
+  // Run the setup calls and addTask with placeholder values; the signature string of
+  // each request built from those placeholders is exactly the template the guide must show.
   const requests = [];
   const responses = [
+    { stat: 'ok', frob: '{frob}' },
+    { stat: 'ok', auth: { token: '{token}' } },
+    { stat: 'ok', lists: { list: [] } },
     { stat: 'ok', timeline: '{timeline}' },
     { stat: 'ok', list: { id: '{listId}', taskseries: { id: '{seriesId}', task: { id: '{taskId}' } } } },
     { stat: 'ok' },
@@ -58,18 +64,24 @@ test('signature strings match what rtm.js signs', async () => {
     return { ok: true, json: async () => ({ rsp: responses.shift() }) };
   };
   try {
-    await addTask(
-      { listId: '{listId}', name: '{name}', url: '{url}', tag: '{tag}' },
-      { apiKey: '{apiKey}', secret: '{secret}', token: '{token}' },
-    );
+    await getFrob(creds);
+    await getToken('{frob}', creds);
+    await getLists(creds);
+    await addTask({ listId: '{listId}', name: '{name}', url: '{url}', tag: '{tag}' }, creds);
   } finally {
     globalThis.fetch = realFetch;
   }
 
+  assert.equal(requests.length, 7);
   for (const { api_sig: _sig, ...params } of requests) {
-    const expected = `{secret}${Object.keys(params).sort().map((key) => key + params[key]).join('')}`;
-    assert.equal(row(params.method, 2)[1], expected, `signature string for ${params.method}`);
+    assert.equal(row(params.method, 2)[1], signatureString(params), `signature string for ${params.method}`);
   }
+});
+
+test('auth URL signature string matches authUrl()', () => {
+  const url = new URL(authUrl('{frob}', creds));
+  url.searchParams.delete('api_sig');
+  assert.equal(row('auth URL', 2)[1], signatureString(Object.fromEntries(url.searchParams)));
 });
 
 test('worked example matches sign()', () => {

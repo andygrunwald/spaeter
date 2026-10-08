@@ -1,25 +1,30 @@
-# iPhone Shortcut
+# iPhone Shortcuts
 
-This guide builds the Apple Shortcut **"Später"**. It appears in the Share Sheet of
-Safari, YouTube, Spotify, WhatsApp, Signal, Discord and every other app that shares
-links. It classifies the link, looks up its title, and adds the task to Remember The
-Milk without asking, then shows a short notification.
+*Später* on the iPhone consists of two Apple Shortcuts:
 
-The Shortcut talks to the RTM API directly, exactly like the Chrome extension. It
-reuses the API key, shared secret, auth token and list ID from the extension's
-settings page (section "Values for the iPhone Shortcut"), so there is no separate
-login on the iPhone.
+- **Später Setup** runs once from the Shortcuts app. It connects to Remember The Milk,
+  lets you choose the list and the language of the task names, and saves everything to
+  `iCloud Drive/Shortcuts/spaeter.json`.
+- **Später** appears in the Share Sheet of Safari, YouTube, Spotify, WhatsApp, Signal,
+  Discord and every other app that shares links. It classifies the link, looks up its
+  title, adds the task to Remember The Milk without asking, and shows a short
+  notification.
+
+Both talk to the RTM API directly; there is no server in between. The iPhone setup is
+independent of the Chrome extension.
 
 > [!IMPORTANT]
-> The values in this guide (`BANANAS`, `abc123`, `YOUR_API_KEY`, …) are placeholders.
-> Never put your real key, secret or token into a file, a screenshot, an issue or a
-> shared `.shortcut` file.
+> Your API key, shared secret and auth token are only typed in at run time and stored in
+> `spaeter.json` in your iCloud Drive, never inside the Shortcuts. Never share or commit
+> `spaeter.json`. The values in this guide (`BANANAS`, `abc123`, `{apiKey}`, …) are
+> placeholders.
 
 ## Before you start
 
-- The Chrome extension is connected and a list is chosen (see the [README](../README.md)).
-- Build the Shortcut in the **Shortcuts app on your Mac**. Typing regular expressions and
-  signature strings is much easier there, and iCloud syncs the Shortcut to your iPhone.
+- You have your own RTM API key and shared secret (see
+  [Getting an RTM API key](../README.md#getting-an-rtm-api-key)).
+- Build the Shortcuts in the **Shortcuts app on your Mac**. Typing regular expressions and
+  signature strings is much easier there, and iCloud syncs the Shortcuts to your iPhone.
 
 ## Reference values
 
@@ -65,6 +70,20 @@ Every RTM request is signed: `api_sig` is the MD5 hash of the shared secret foll
 all parameters as `keyvalue`, **sorted alphabetically by key**, with no separators. In the
 table, `{name}` stands for a Shortcuts variable; everything else is literal text.
 
+Calls of **Später Setup**:
+
+| Call | Signature string |
+|------|------------------|
+| `rtm.auth.getFrob` | `{secret}api_key{apiKey}formatjsonmethodrtm.auth.getFrob` |
+| auth URL | `{secret}api_key{apiKey}frob{frob}permswrite` |
+| `rtm.auth.getToken` | `{secret}api_key{apiKey}formatjsonfrob{frob}methodrtm.auth.getToken` |
+| `rtm.lists.getList` | `{secret}api_key{apiKey}auth_token{token}formatjsonmethodrtm.lists.getList` |
+
+The auth URL is not an API call: it is the page where you allow access, and its signature
+covers only `api_key`, `frob` and `perms`.
+
+Calls of **Später**:
+
 | Call | Signature string |
 |------|------------------|
 | `rtm.timelines.create` | `{secret}api_key{apiKey}auth_token{token}formatjsonmethodrtm.timelines.create` |
@@ -72,7 +91,7 @@ table, `{name}` stands for a Shortcuts variable; everything else is literal text
 | `rtm.tasks.setURL` | `{secret}api_key{apiKey}auth_token{token}formatjsonlist_id{listId}methodrtm.tasks.setURLtask_id{taskId}taskseries_id{seriesId}timeline{timeline}url{url}` |
 | `rtm.tasks.addTags` | `{secret}api_key{apiKey}auth_token{token}formatjsonlist_id{listId}methodrtm.tasks.addTagstags{tag}task_id{taskId}taskseries_id{seriesId}timeline{timeline}` |
 
-The request itself sends the same parameters (without the secret) plus `api_sig` as a
+Each API request sends the same parameters (without the secret) plus `api_sig` as a
 form body. Smart Add is deliberately not used: it would turn `#`, `!1`, `^` or `//` in
 titles into lists, tags, priorities or notes.
 
@@ -95,26 +114,91 @@ MD5 (`api_sig`): `159cc875b849b791d38d51f4cee95218`
 Put the signature string into a **Text** action, add **Generate Hash** (MD5) and **Quick
 Look**. If the result differs, check for spaces or line breaks in the Text action.
 
-## Build the Shortcut
+## How to read the build steps
 
-Create a new Shortcut named **Später** and add these actions in order. Action names are
-from the English Shortcuts app; "→ variable `x`" means a **Set Variable** action named `x`
-right after it.
+Action names are from the English Shortcuts app. "→ variable `x`" means a **Set
+Variable** action named `x` right after it.
+
+Every RTM API call in both Shortcuts uses the same block:
+
+1. **Text** with the signature string for the call from the tables above (insert
+   variables where the table shows `{…}`; no spaces, no line breaks)
+2. **Generate Hash**: `MD5` → variable `sig`
+3. **Get Contents of URL** `https://api.rememberthemilk.com/services/rest/`
+   - Method: `POST`
+   - Request Body: `Form`, with one text field per parameter of the signature string
+     (`api_key`, `format` = `json`, `method`, …) plus `api_sig` = `sig`
+4. → variable `response`
+5. **Get Dictionary Value** `rsp.stat` from `response`. **If** it is not `ok`:
+   **Show Alert** with **Get Dictionary Value** `rsp.err.msg` from `response`, then
+   **Stop This Shortcut**. **End If**
+
+Below, "**RTM call** `method`" stands for this block.
+
+## Build "Später Setup"
+
+Create a new Shortcut named **Später Setup**.
+
+1. **Ask for Input** (Text) "RTM API key" → variable `apiKey`
+2. **Ask for Input** (Text) "RTM shared secret" → variable `secret`
+3. **RTM call** `rtm.auth.getFrob`, then **Get Dictionary Value** `rsp.frob` → variable
+   `frob`
+4. **Text** with the auth URL signature string, **Generate Hash** `MD5` → variable `sig`
+5. **Text**
+   `https://www.rememberthemilk.com/services/auth/?api_key={apiKey}&perms=write&frob={frob}&api_sig={sig}`,
+   then **Open URLs**
+6. **Wait to Return**, then **Show Alert** "Did you allow access in Safari?" (with Cancel)
+7. **RTM call** `rtm.auth.getToken`, then **Get Dictionary Value** `rsp.auth.token` →
+   variable `token`
+8. **Dictionary** (empty) → variable `lists`
+9. **RTM call** `rtm.lists.getList`, then **Get Dictionary Value** `rsp.lists.list`, and
+   **Repeat with Each** item:
+   - **If** the item's `smart` is `0`: **If** its `archived` is `0`: **Set Dictionary
+     Value** key = item's `name`, value = item's `id`, in `lists` → variable `lists`.
+     **End If**, **End If**
+
+   **End Repeat**
+10. **Get Dictionary Value**: `All Keys` of `lists`, **Choose from List** "Which list?",
+    then **Get Dictionary Value** (chosen name) from `lists` → variable `listId`
+11. **Choose from Menu** "Language of task names" with the options `Deutsch` and
+    `English`. In each option, add a **Dictionary** with these items (templates and tags
+    from the table above for that language), then → variable `config`:
+
+    | Key               | Value                      |
+    |-------------------|----------------------------|
+    | `api_key`         | variable `apiKey`          |
+    | `secret`          | variable `secret`          |
+    | `auth_token`      | variable `token`           |
+    | `list_id`         | variable `listId`          |
+    | `read_template`   | e.g. `"%s" lesen`          |
+    | `read_tag`        | e.g. `lesen`               |
+    | `watch_template`  | e.g. `"%s" ansehen`        |
+    | `watch_tag`       | e.g. `ansehen`             |
+    | `listen_template` | e.g. `"%s" anhören`        |
+    | `listen_tag`      | e.g. `anhören`             |
+
+    **End Menu**
+12. **Save File** `config` to the `Shortcuts` folder in iCloud Drive with the subpath
+    `spaeter.json`. Turn **Ask Where to Save** off and **Overwrite If File Exists** on.
+13. **Show Notification** "Setup complete. Share a link and pick Später."
+
+Run it once from the Shortcuts app. Run it again whenever you want to change the list or
+the language, or after you revoked access in Remember The Milk.
+
+## Build "Später"
+
+Create a new Shortcut named **Später**.
 
 ### 1. Input and configuration
 
 1. **Receive** `URLs`, `Safari web pages` and `Text` input from **Share Sheet**.
    If there's no input: **Get Clipboard**.
-2. **Text** `YOUR_API_KEY` → variable `apiKey`
-3. **Text** `YOUR_SHARED_SECRET` → variable `secret`
-4. **Text** `YOUR_AUTH_TOKEN` → variable `token`
-5. **Text** `YOUR_LIST_ID` → variable `listId`
-6. **Dictionary** with these text items (values from the template table above) →
-   variable `config`:
-   `read_template`, `read_tag`, `watch_template`, `watch_tag`, `listen_template`, `listen_tag`
-7. Open **Shortcut Details** (ⓘ) → **Setup** → add an **Import Question** for each of the
-   Text actions 2–5, for example "What is your RTM API key?". Anyone who imports the
-   Shortcut then enters their own values.
+2. **Get File** from the `Shortcuts` folder with the path `spaeter.json`, with **Error If
+   Not Found** off. **If** the file does not have any value: **Show Alert** "Run Später
+   Setup first." and **Stop This Shortcut**. **End If**
+3. **Get Dictionary from Input** → variable `config`
+4. **Get Dictionary Value** from `config`: `api_key` → variable `apiKey`, `secret` →
+   variable `secret`, `auth_token` → variable `token`, `list_id` → variable `listId`
 
 ### 2. Link, type and title
 
@@ -147,19 +231,7 @@ right after it.
 
 ### 3. RTM calls
 
-Repeat this block for each of the four calls, in the order of the table above.
-
-1. **Text** with the signature string for the call (insert variables where the table
-   shows `{…}`; no spaces, no line breaks)
-2. **Generate Hash**: `MD5` → variable `sig`
-3. **Get Contents of URL** `https://api.rememberthemilk.com/services/rest/`
-   - Method: `POST`
-   - Request Body: `Form`, with one text field per parameter of the signature string
-     (`api_key`, `auth_token`, `format` = `json`, `method`, …) plus `api_sig` = `sig`
-4. → variable `response`
-5. **Get Dictionary Value** `rsp.stat` from `response`. **If** it is not `ok`:
-   **Show Alert** with **Get Dictionary Value** `rsp.err.msg` from `response`, then
-   **Stop This Shortcut**. **End If**
+**RTM call** for each of the four calls of **Später**, in the order of the table above.
 
 After the individual calls, extract what the next calls need:
 
@@ -177,41 +249,43 @@ After the individual calls, extract what the next calls need:
 
 ### 5. Enable it in the Share Sheet
 
-In **Shortcut Details** (ⓘ), turn on **Show in Share Sheet**. On the iPhone, the
+In the details of **Später** (ⓘ), turn on **Show in Share Sheet**. On the iPhone, the
 Shortcut is listed at the bottom of every Share Sheet. In apps such as YouTube or
 Spotify, tap **Share** → **More** (`…`) to reach it, and add it to your favourites.
 
-## Export and sign a `.shortcut` file
+## Export and sign `.shortcut` files
 
-Use this to back up the Shortcut or to share it, for example as `ios/Spaeter.shortcut`
-in this repository.
+Use this to back up the Shortcuts or to share them, for example as
+`ios/Spaeter.shortcut` and `ios/Spaeter-Setup.shortcut` in this repository. Neither
+Shortcut contains secrets, so they are safe to share. **Never share `spaeter.json`.**
 
-1. **Remove your values.** Set the Text actions 2–5 back to `YOUR_API_KEY`,
-   `YOUR_SHARED_SECRET`, `YOUR_AUTH_TOKEN` and `YOUR_LIST_ID`. The Import Questions make
-   everyone enter their own values on import.
-2. **Export** on the Mac: in the Shortcuts app, right-click the Shortcut →
-   **Share** → **Export File**, and save it as `Später.shortcut`. Depending on the macOS
-   version, the export dialog already asks who may import it and signs the file.
-3. **Sign** the file explicitly (or re-sign it) with the `shortcuts` command line tool. It
-   needs a Mac that is signed in to iCloud:
+1. **Export** on the Mac: in the Shortcuts app, right-click the Shortcut →
+   **Share** → **Export File**, and save it as `Später.shortcut` (and
+   `Später Setup.shortcut`). Depending on the macOS version, the export dialog already
+   asks who may import it and signs the file.
+2. **Sign** the files explicitly (or re-sign them) with the `shortcuts` command line
+   tool. It needs a Mac that is signed in to iCloud:
 
    ```sh
    shortcuts sign --mode anyone --input Später.shortcut --output Spaeter.shortcut
+   shortcuts sign --mode anyone --input "Später Setup.shortcut" --output Spaeter-Setup.shortcut
    ```
 
-   `--mode anyone` lets everyone import the file. `--mode people-who-know-me` limits it
+   `--mode anyone` lets everyone import the files. `--mode people-who-know-me` limits it
    to people in your contacts.
-4. **Test the import**: AirDrop `Spaeter.shortcut` to your iPhone or open it there. The
-   Import Questions must show up with the placeholder values, not your real ones.
-5. **Commit** (optional): `.shortcut` files are in `.gitignore`, so a signed,
-   secret-free file has to be added on purpose with `git add -f ios/Spaeter.shortcut`.
+3. **Test the import**: AirDrop the files to your iPhone or open them there, then run
+   **Später Setup**.
+4. **Commit** (optional): `.shortcut` files are in `.gitignore`, so signed files have to
+   be added on purpose, e.g. `git add -f ios/Spaeter.shortcut ios/Spaeter-Setup.shortcut`.
 
 ## Troubleshooting
 
 | Problem | Fix |
 |---------|-----|
 | `Invalid signature (RTM error 96)` | The signature string is wrong: check the key order, typos and stray spaces, and compare with the worked example. |
-| `Login failed / Invalid auth token (RTM error 98)` | The token was revoked. Reconnect in the Chrome extension and update `YOUR_AUTH_TOKEN`. |
+| `Login failed / Invalid auth token (RTM error 98)` | The token was revoked. Run **Später Setup** again. |
+| `Invalid frob - did you authenticate? (RTM error 101)` | Access wasn't allowed in Safari before returning. Run **Später Setup** again. |
+| "Run Später Setup first." | `spaeter.json` is missing from `iCloud Drive/Shortcuts`. Run **Später Setup**. |
 | `Invalid API Key (RTM error 100)` | The API key is wrong or not yet approved by RTM. |
 | The title is empty or `"" lesen` | The page blocks requests without a browser. Edit the task in RTM, or add an oEmbed rule if the site offers oEmbed. |
 | The Shortcut is missing in an app's Share Sheet | Check that **Show in Share Sheet** is on and that `URLs` is selected as input type. |

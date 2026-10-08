@@ -6,12 +6,13 @@
   covers code, tests, fixtures, docs, screenshots, `.shortcut` files, commit messages and
   PR descriptions.
 - These values live only in `chrome.storage.local` (entered by the user on the
-  extension's settings page) and in the iPhone Shortcut's import questions.
+  extension's settings page) and in `spaeter.json` in the user's iCloud Drive (written by
+  the "Später Setup" Shortcut). Never commit or attach a `spaeter.json`.
 - Tests and docs use only RTM's documented example secret `BANANAS`, values such as
-  `abc123`, or obvious placeholders such as `YOUR_API_KEY`, `YOUR_SHARED_SECRET`,
-  `YOUR_AUTH_TOKEN` and `YOUR_LIST_ID`. Never hardcode a real key "just for testing".
-- Never export or commit a `.shortcut` file whose Text actions contain real values.
-  `.shortcut` files are ignored by git on purpose.
+  `abc123`, or obvious placeholders such as `YOUR_API_KEY` or `{apiKey}`. Never hardcode a
+  real key "just for testing".
+- The Shortcuts must never store secrets: the setup Shortcut asks for them at run time.
+  `.shortcut` files and `spaeter.json` are ignored by git on purpose.
 - If a secret gets committed anyway: stop, tell the user, and tell them to revoke the
   token in Remember The Milk (Settings → Apps) and request a new API key. Do not rewrite
   git history on your own.
