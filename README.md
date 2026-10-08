@@ -22,17 +22,10 @@ The link is stored as the task's URL, and the task has no due date.
 
 *Später* comes in two flavours:
 
-- **Google Chrome extension**: a button next to the address bar. Click it and the task
-  will be created.
-
-  <!-- Screenshot: docs/screenshots/chrome.png -->
-  *Screenshot coming soon.*
-
-- **iPhone Share functionality**: share a link from Safari, YouTube, Spotify or any other
-  app and pick *Später*.
-
-  <!-- Screenshot: docs/screenshots/iphone.png -->
-  *Screenshot coming soon.*
+| Google Chrome extension | iPhone Share functionality |
+|-------------------------|----------------------------|
+| A button next to the address bar. Click it and the task will be created. | Share a link from Safari, YouTube, Spotify or any other app and pick *Später*. |
+| ![Später popup in Google Chrome](docs/google-chrome-extension.png) | *Screenshot coming soon.* <!-- Screenshot: docs/iphone.png --> |
 
 ## How links are classified
 
