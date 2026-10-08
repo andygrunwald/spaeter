@@ -1,0 +1,9 @@
+The icons in this directory are rendered from the "cow face" emoji (U+1F42E)
+of Noto Emoji by Google: https://github.com/googlefonts/noto-emoji
+Source file: 2D/svg/emoji_u1f42e.svg (copied to assets/emoji_u1f42e.svg)
+
+Noto Emoji image resources are licensed under the Apache License, Version 2.0:
+https://www.apache.org/licenses/LICENSE-2.0
+
+The icons were resized to 16, 32, 48 and 128 px; no other changes were made.
+This is a generic emoji, not the Remember The Milk logo.
