@@ -138,8 +138,8 @@ New UI strings always go into **every** locale; `make validate` fails otherwise.
 
 ## Dependencies and Renovate
 
-[Renovate](renovate.json) opens update PRs weekly. Non-major updates of dev dependencies
-and GitHub Actions merge automatically once CI is green; majors need a review.
+[Renovate](renovate.json) opens update PRs weekly, only for releases that are at least
+14 days old. Nothing merges automatically: every update PR needs a review.
 
 `blueimp-md5` is vendored into the extension: on its update PR, run `make vendor` and
 commit `extension/vendor/md5.js`. CI fails until the vendored copy matches.

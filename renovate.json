@@ -9,24 +9,12 @@
   "timezone": "Europe/Berlin",
   "schedule": ["before 6am on monday"],
   "rangeStrategy": "pin",
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "14 days",
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 6am on the first day of the month"]
   },
   "packageRules": [
-    {
-      "description": "Automerge non-major dev dependency updates once CI passes",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    },
-    {
-      "description": "Automerge non-major GitHub Actions updates once CI passes",
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    },
     {
       "description": "Update ESLint packages together",
       "matchPackageNames": ["eslint", "@eslint/**", "globals"],
@@ -35,7 +23,6 @@
     {
       "description": "blueimp-md5 is vendored into the extension and needs a manual `make vendor`",
       "matchPackageNames": ["blueimp-md5"],
-      "automerge": false,
       "prBodyNotes": [
         "This package is vendored: run `make vendor` on this branch and commit `extension/vendor/md5.js`. CI fails until the vendored copy matches."
       ]
