@@ -32,3 +32,5 @@ Run `make check`. See [DEVELOPMENT.md](DEVELOPMENT.md) for all targets.
   no "Remember The Milk" or "RTM" in the product name, no RTM cow logo, keep the
   attribution notice.
 - Documentation is English only.
+- When you add or remove a file in `docs/`, update the table of contents in
+  `docs/README.md` and the "Documentation" section in `README.md`.
