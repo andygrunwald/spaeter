@@ -45,13 +45,6 @@
   "saveButton": { "message": "Save" },
   "saved": { "message": "Saved." },
 
-  "sectionIphone": { "message": "Values for the iPhone Shortcut" },
-  "iphoneHelp": { "message": "Enter these values when you import the Shortcut. Keep them private, never share or commit them." },
-  "tokenLabel": { "message": "Auth token" },
-  "listIdLabel": { "message": "List ID" },
-  "copyButton": { "message": "Copy" },
-  "copied": { "message": "Copied." },
-
   "titleLabel": { "message": "Title" },
   "previewLabel": { "message": "Task" },
   "addButton": { "message": "Add" },

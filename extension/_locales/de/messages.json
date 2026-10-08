@@ -45,13 +45,6 @@
   "saveButton": { "message": "Speichern" },
   "saved": { "message": "Gespeichert." },
 
-  "sectionIphone": { "message": "Werte für den iPhone-Kurzbefehl" },
-  "iphoneHelp": { "message": "Gib diese Werte beim Importieren des Kurzbefehls ein. Halte sie geheim, teile oder committe sie nie." },
-  "tokenLabel": { "message": "Auth-Token" },
-  "listIdLabel": { "message": "Listen-ID" },
-  "copyButton": { "message": "Kopieren" },
-  "copied": { "message": "Kopiert." },
-
   "titleLabel": { "message": "Titel" },
   "previewLabel": { "message": "Aufgabe" },
   "addButton": { "message": "Hinzufügen" },

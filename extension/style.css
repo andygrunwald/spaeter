@@ -146,17 +146,6 @@ footer {
   color: var(--muted);
 }
 
-.options .values dd {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin: 0 0 0.6rem;
-}
-
-.options .values code {
-  overflow-wrap: anywhere;
-}
-
 /* Popup */
 .popup {
   width: 360px;

@@ -20,10 +20,6 @@ function renderConnection() {
   $('disconnect').hidden = !connected;
   $('apiKey').disabled = connected;
   $('secret').disabled = connected;
-  $('iphone').hidden = !connected;
-  $('valueApiKey').textContent = settings.apiKey;
-  $('valueToken').textContent = settings.token;
-  $('valueListId').textContent = settings.listId;
 }
 
 async function renderLists() {
@@ -87,10 +83,7 @@ $('disconnect').addEventListener('click', async () => {
   await renderLists();
 });
 
-$('list').addEventListener('change', async (event) => {
-  await update({ listId: event.target.value });
-  renderConnection();
-});
+$('list').addEventListener('change', (event) => update({ listId: event.target.value }));
 
 $('confirm').addEventListener('change', (event) => update({ confirm: event.target.checked }));
 
@@ -114,14 +107,6 @@ $('templates').addEventListener('submit', async (event) => {
   await update({ templates });
   showStatus($('templatesStatus'), t('saved'));
 });
-
-for (const button of document.querySelectorAll('[data-copy]')) {
-  button.addEventListener('click', async () => {
-    await navigator.clipboard.writeText($(button.dataset.copy).textContent);
-    button.textContent = t('copied');
-    setTimeout(() => (button.textContent = t('copyButton')), 1500);
-  });
-}
 
 localize();
 settings = await loadSettings();
