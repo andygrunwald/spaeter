@@ -4,6 +4,8 @@
   "config": {
     // Tables with regexes and signature strings can neither be wrapped nor aligned.
     "MD013": false,
-    "MD060": false
+    "MD060": false,
+    // <img> is needed to size screenshots, which Markdown image syntax can't do.
+    "MD033": { "allowed_elements": ["img"] }
   }
 }
