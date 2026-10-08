@@ -22,7 +22,7 @@ independent of the Chrome extension.
 ## Before you start
 
 - You have your own RTM API key and shared secret (see
-  [Getting an RTM API key](../README.md#getting-an-rtm-api-key)).
+  [Setup Prerequisite: Getting an RTM API key](../README.md#setup-prerequisite-getting-an-rtm-api-key)).
 - Build the Shortcuts in the **Shortcuts app on your Mac**. Typing regular expressions and
   signature strings is much easier there, and iCloud syncs the Shortcuts to your iPhone.
 

@@ -1,15 +1,13 @@
 # 🐮 *Später*
 
 Save articles, videos and podcasts you want to consume later as tasks in
-[Remember The Milk](https://www.rememberthemilk.com/), with one click in Google Chrome
+[Remember The Milk](https://www.rememberthemilk.com/). With one click in Google Chrome
 or from the Share functionality on your iPhone.
-
-![Später icon](extension/icons/icon-128.png)
 
 ## What it does
 
 You find an interesting link while browsing, or a friend sends one via WhatsApp, Signal
-or Discord, but you don't have time or motivation for it right now. *Später* sorts the
+or Discord, but you don't have time or motivation to consume it right now. *Später* sorts the
 link into one of three consumption categories, **Read** (articles), **Watch** (videos)
 or **Listen** (podcasts), and turns it into a task in the Remember The Milk list of your
 choice:
@@ -46,7 +44,7 @@ The link is stored as the task's URL, and the task has no due date.
 
 Task names and tags are configurable per type.
 
-## Getting an RTM API key
+## Setup Prerequisite: Getting an RTM API key
 
 *Später* talks to the Remember The Milk API with **your own API key**. Nothing runs on a
 server in between, and no key is shipped with this project. You need the key once and
@@ -66,24 +64,25 @@ can use it for each device you set up.
 
 Good to know:
 
-- The API is free for **non-commercial use** only; see the
+- The Remember The Milk API is free for **non-commercial use** only; see the
   [API terms](https://www.rememberthemilk.com/services/api/terms.rtm).
 - Connecting creates an **auth token** with write access. It doesn't expire by itself.
   You can revoke it anytime in Remember The Milk under **Settings → Apps**; after that,
   reconnect in the Chrome extension or run *Später Setup* again on your iPhone.
 - If the API key or secret leaks, revoke the token and request a new key.
 
-## Setup: Google Chrome
+## Setup: Google Chrome Extension
 
 The extension is not available in the Chrome Web Store (yet), so it needs a manual
 setup:
 
-1. Download this repository (or `git clone` it).
-2. Open `chrome://extensions`, turn on **Developer mode** (top right) and click **Load
+1. [Get an RTM API key](#setup-prerequisite-getting-an-rtm-api-key).
+2. Download this repository (or `git clone` it).
+3. Open `chrome://extensions`, turn on **Developer mode** (top right) and click **Load
    unpacked**. Select the `extension` folder.
-3. Click the puzzle icon next to the address bar and **pin** *Später*, so its button
+4. Click the puzzle icon next to the address bar and **pin** *Später*, so its button
    always shows next to the address bar.
-4. The settings open automatically on first install. You can also right-click the button
+5. The settings open automatically on first install. You can also right-click the button
    and choose **Options**. In the settings:
    1. Enter your **API key** and **shared secret** and click **Connect to Remember The
       Milk**.
@@ -95,14 +94,12 @@ setup:
    5. Optional: choose a **preset** (Deutsch or English) or edit the task names and tags,
       then click **Save**.
 
-The extension's interface follows Chrome's language (English or German).
-
 ## Setup: iPhone / iOS
 
 On the iPhone, *Später* consists of two Apple Shortcuts: ***Später Setup*** connects to
 Remember The Milk once, and ***Später*** adds links from the Share Sheet.
 
-1. [Get an RTM API key](#getting-an-rtm-api-key).
+1. [Get an RTM API key](#setup-prerequisite-getting-an-rtm-api-key).
 2. Get both Shortcuts: import the signed `.shortcut` files, or build them yourself in the
    Shortcuts app on your Mac (they sync to your iPhone via iCloud).
 3. Run ***Später Setup*** once from the Shortcuts app: enter your API key and shared
