@@ -41,6 +41,7 @@ Task name and tag depend on the consumption category (examples with the English 
 - [Setup: Google Chrome Extension](docs/setup-google-chrome-extension.md)
 - [Setup: iPhone / iOS](docs/setup-iphone.md)
 - [Architecture and data flow](docs/architecture.md)
+- [Bonus: Age tags with MilkScript](docs/bonus-milkscript-age-tags.md)
 
 All chapters: [docs/README.md](docs/README.md)
 
