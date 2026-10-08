@@ -1,5 +1,5 @@
 // Single source of truth for link classification and task naming.
-// ios/SHORTCUT.md mirrors these values; tests/ios-guide.test.js keeps both in sync.
+// The iPhone Shortcut is generated from these values (scripts/build-shortcut-rules.mjs).
 
 export const TYPES = ['read', 'watch', 'listen'];
 

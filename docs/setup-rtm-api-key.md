@@ -12,8 +12,8 @@ can use it for each device you set up.
 3. Wait for the approval (by the RTM team).
 4. Once approved, you get an **API key** and a **shared secret**. RTM delivers them by
    email and shows them on the API keys page.
-5. Enter them **only** in the Chrome extension's settings or in the *Später Setup*
-   Shortcut on your iPhone. The shared secret signs every request: treat it like a
+5. Enter them **only** in the Chrome extension's settings or in the setup of the
+   *Später* Shortcut on your iPhone. The shared secret signs every request: treat it like a
    password. Never paste it into an issue, a screenshot or a commit.
 
 Good to know:
@@ -22,7 +22,7 @@ Good to know:
   [API terms](https://www.rememberthemilk.com/services/api/terms.rtm).
 - Connecting creates an **auth token** with write access. It doesn't expire by itself.
   You can revoke it anytime in Remember The Milk under **Settings → Apps**; after that,
-  reconnect in the Chrome extension or run *Später Setup* again on your iPhone.
+  reconnect in the Chrome extension or run the setup of the *Später* Shortcut again.
 - If the API key or secret leaks, revoke the token and request a new key.
 
 Next: set up the [Google Chrome extension](setup-google-chrome-extension.md) or the
