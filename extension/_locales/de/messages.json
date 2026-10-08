@@ -1,0 +1,66 @@
+{
+  "appName": { "message": "Später" },
+  "appDescription": { "message": "Speichere Links zum späteren Lesen, Ansehen oder Anhören als Aufgaben in Remember The Milk." },
+  "actionTitle": { "message": "Für später merken" },
+  "attribution": { "message": "Dieses Produkt nutzt die Remember The Milk API, wird aber von Remember The Milk weder unterstützt noch zertifiziert." },
+
+  "typeRead": { "message": "Lesen" },
+  "typeWatch": { "message": "Ansehen" },
+  "typeListen": { "message": "Anhören" },
+
+  "optionsTitle": { "message": "Später – Einstellungen" },
+  "sectionConnection": { "message": "Verbindung zu Remember The Milk" },
+  "apiKeyHelp": { "message": "Nutze deinen eigenen API-Key und dein Shared Secret von rememberthemilk.com/services/api/keys.rtm. Wie du sie bekommst, steht in der README." },
+  "apiKeyLabel": { "message": "API-Key" },
+  "secretLabel": { "message": "Shared Secret" },
+  "connectButton": { "message": "Mit Remember The Milk verbinden" },
+  "authHint": { "message": "Ein Tab von Remember The Milk wurde geöffnet. Erlaube dort den Zugriff und klicke dann auf den Button unten." },
+  "authorizedButton": { "message": "Ich habe den Zugriff erlaubt" },
+  "disconnectButton": { "message": "Trennen" },
+  "statusNotConnected": { "message": "Nicht verbunden." },
+  "statusConnected": {
+    "message": "Verbunden als $USER$.",
+    "placeholders": { "user": { "content": "$1" } }
+  },
+  "errorCredentialsMissing": { "message": "Bitte gib den API-Key und das Shared Secret ein." },
+
+  "sectionList": { "message": "Liste" },
+  "listLabel": { "message": "Aufgaben in diese Liste eintragen" },
+  "listPlaceholder": { "message": "– Liste auswählen –" },
+  "listNeedsConnection": { "message": "Verbinde dich zuerst, um deine Listen zu laden." },
+
+  "sectionBehavior": { "message": "Verhalten" },
+  "confirmLabel": { "message": "Vor dem Hinzufügen ein Bestätigungs-Popup anzeigen (Typ und Titel korrigierbar)" },
+  "confirmHelp": { "message": "Ist das ausgeschaltet, fügt ein Klick auf den Toolbar-Button die Aufgabe sofort hinzu." },
+
+  "sectionTemplates": { "message": "Aufgabennamen und Tags" },
+  "templatesHelp": { "message": "%s wird durch den Titel der Seite ersetzt." },
+  "presetLabel": { "message": "Vorlage übernehmen" },
+  "presetChoose": { "message": "– Auswählen –" },
+  "presetDe": { "message": "Deutsch" },
+  "presetEn": { "message": "English" },
+  "templateLabel": { "message": "Aufgabenname" },
+  "tagLabel": { "message": "Tag" },
+  "templateInvalid": { "message": "Jeder Aufgabenname muss %s genau einmal enthalten." },
+  "saveButton": { "message": "Speichern" },
+  "saved": { "message": "Gespeichert." },
+
+  "sectionIphone": { "message": "Werte für den iPhone-Kurzbefehl" },
+  "iphoneHelp": { "message": "Gib diese Werte beim Importieren des Kurzbefehls ein. Halte sie geheim, teile oder committe sie nie." },
+  "tokenLabel": { "message": "Auth-Token" },
+  "listIdLabel": { "message": "Listen-ID" },
+  "copyButton": { "message": "Kopieren" },
+  "copied": { "message": "Kopiert." },
+
+  "titleLabel": { "message": "Titel" },
+  "previewLabel": { "message": "Aufgabe" },
+  "addButton": { "message": "Hinzufügen" },
+  "loading": { "message": "Titel wird ermittelt …" },
+  "added": { "message": "Hinzugefügt ✓" },
+  "notConfigured": { "message": "Bitte verbinde dich zuerst mit Remember The Milk und wähle eine Liste aus." },
+  "openSettings": { "message": "Einstellungen öffnen" },
+  "unsupportedPage": { "message": "Nur Webseiten (http/https) können gespeichert werden." },
+
+  "notifyAdded": { "message": "Zu Remember The Milk hinzugefügt" },
+  "notifyFailed": { "message": "Aufgabe konnte nicht hinzugefügt werden" }
+}

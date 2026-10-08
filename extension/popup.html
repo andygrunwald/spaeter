@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Später</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body class="popup">
+  <div id="message" hidden>
+    <p id="messageText"></p>
+    <button id="openSettings" data-i18n="openSettings" hidden></button>
+  </div>
+
+  <form id="form" hidden>
+    <fieldset class="types">
+      <label><input type="radio" name="type" value="read"> <span data-i18n="typeRead"></span></label>
+      <label><input type="radio" name="type" value="watch"> <span data-i18n="typeWatch"></span></label>
+      <label><input type="radio" name="type" value="listen"> <span data-i18n="typeListen"></span></label>
+    </fieldset>
+    <label><span data-i18n="titleLabel"></span>
+      <input id="title" name="title" required disabled>
+    </label>
+    <p class="url" id="url"></p>
+    <p class="preview"><span data-i18n="previewLabel"></span>: <strong id="preview"></strong></p>
+    <div class="row">
+      <button id="add" type="submit" data-i18n="addButton" disabled></button>
+      <span id="status" class="status"></span>
+    </div>
+  </form>
+
+  <footer data-i18n="attribution"></footer>
+</body>
+</html>

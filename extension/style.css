@@ -1,0 +1,193 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #59636e;
+  --border: #d1d9e0;
+  --accent: #0b6bcb;
+  --accent-fg: #ffffff;
+  --error: #c62828;
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1e1f22;
+    --fg: #e6e7ea;
+    --muted: #a0a4ab;
+    --border: #3b3e45;
+    --accent: #4a9eff;
+    --accent-fg: #0b0c0e;
+    --error: #ff6b6b;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+label {
+  display: block;
+  margin: 0.6rem 0;
+}
+
+label > span {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--muted);
+}
+
+input:not([type="checkbox"], [type="radio"]),
+select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+button {
+  padding: 0.45rem 0.9rem;
+  font: inherit;
+  color: var(--accent-fg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.secondary {
+  color: var(--accent);
+  background: transparent;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.help {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+.status {
+  color: var(--muted);
+}
+
+.status.error {
+  color: var(--error);
+}
+
+footer {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.8em;
+}
+
+/* Options page */
+.options main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+.options h1 {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.options section {
+  padding: 0.5rem 0 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.options h2 {
+  font-size: 1.1rem;
+}
+
+.options .checkbox {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.options .checkbox > span {
+  color: var(--fg);
+}
+
+.options table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.options th,
+.options td {
+  padding: 0.25rem;
+  text-align: left;
+  font-weight: normal;
+}
+
+.options thead th {
+  color: var(--muted);
+}
+
+.options .values dd {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0 0 0.6rem;
+}
+
+.options .values code {
+  overflow-wrap: anywhere;
+}
+
+/* Popup */
+.popup {
+  width: 360px;
+  padding: 0.75rem 1rem;
+}
+
+.popup .types {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.popup .types label {
+  margin: 0;
+}
+
+.popup .types label > span {
+  display: inline;
+  color: inherit;
+}
+
+.popup .url {
+  margin: 0.2rem 0;
+  color: var(--muted);
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
+
+.popup .preview {
+  margin: 0.6rem 0;
+  overflow-wrap: anywhere;
+}

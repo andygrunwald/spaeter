@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Später</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="options.js"></script>
+</head>
+<body class="options">
+  <main>
+    <h1><img src="icons/icon-48.png" alt="" width="32" height="32"> <span data-i18n="optionsTitle"></span></h1>
+
+    <section>
+      <h2 data-i18n="sectionConnection"></h2>
+      <p class="help" data-i18n="apiKeyHelp"></p>
+      <label><span data-i18n="apiKeyLabel"></span>
+        <input id="apiKey" autocomplete="off" spellcheck="false">
+      </label>
+      <label><span data-i18n="secretLabel"></span>
+        <input id="secret" type="password" autocomplete="off" spellcheck="false">
+      </label>
+      <p id="status" class="status"></p>
+      <div class="row">
+        <button id="connect" data-i18n="connectButton"></button>
+        <button id="disconnect" class="secondary" data-i18n="disconnectButton" hidden></button>
+      </div>
+      <div id="authStep" hidden>
+        <p class="help" data-i18n="authHint"></p>
+        <button id="authorized" data-i18n="authorizedButton"></button>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-i18n="sectionList"></h2>
+      <label><span data-i18n="listLabel"></span>
+        <select id="list" disabled></select>
+      </label>
+      <p id="listHint" class="help" data-i18n="listNeedsConnection"></p>
+    </section>
+
+    <section>
+      <h2 data-i18n="sectionBehavior"></h2>
+      <label class="checkbox">
+        <input id="confirm" type="checkbox">
+        <span data-i18n="confirmLabel"></span>
+      </label>
+      <p class="help" data-i18n="confirmHelp"></p>
+    </section>
+
+    <section>
+      <h2 data-i18n="sectionTemplates"></h2>
+      <p class="help" data-i18n="templatesHelp"></p>
+      <label><span data-i18n="presetLabel"></span>
+        <select id="preset">
+          <option value="" data-i18n="presetChoose"></option>
+          <option value="de" data-i18n="presetDe"></option>
+          <option value="en" data-i18n="presetEn"></option>
+        </select>
+      </label>
+      <form id="templates">
+        <table>
+          <thead>
+            <tr><th></th><th data-i18n="templateLabel"></th><th data-i18n="tagLabel"></th></tr>
+          </thead>
+          <tbody>
+            <tr><th data-i18n="typeRead"></th><td><input name="read.template" required></td><td><input name="read.tag" required></td></tr>
+            <tr><th data-i18n="typeWatch"></th><td><input name="watch.template" required></td><td><input name="watch.tag" required></td></tr>
+            <tr><th data-i18n="typeListen"></th><td><input name="listen.template" required></td><td><input name="listen.tag" required></td></tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <button type="submit" data-i18n="saveButton"></button>
+          <span id="templatesStatus" class="status"></span>
+        </div>
+      </form>
+    </section>
+
+    <section id="iphone" hidden>
+      <h2 data-i18n="sectionIphone"></h2>
+      <p class="help" data-i18n="iphoneHelp"></p>
+      <dl class="values">
+        <dt data-i18n="apiKeyLabel"></dt><dd><code id="valueApiKey"></code> <button class="copy secondary" data-copy="valueApiKey" data-i18n="copyButton"></button></dd>
+        <dt data-i18n="tokenLabel"></dt><dd><code id="valueToken"></code> <button class="copy secondary" data-copy="valueToken" data-i18n="copyButton"></button></dd>
+        <dt data-i18n="listIdLabel"></dt><dd><code id="valueListId"></code> <button class="copy secondary" data-copy="valueListId" data-i18n="copyButton"></button></dd>
+      </dl>
+    </section>
+
+    <footer data-i18n="attribution"></footer>
+  </main>
+</body>
+</html>

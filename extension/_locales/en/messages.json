@@ -1,0 +1,66 @@
+{
+  "appName": { "message": "Später" },
+  "appDescription": { "message": "Save links to read, watch or listen to later as tasks in Remember The Milk." },
+  "actionTitle": { "message": "Save for later" },
+  "attribution": { "message": "This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk." },
+
+  "typeRead": { "message": "Read" },
+  "typeWatch": { "message": "Watch" },
+  "typeListen": { "message": "Listen" },
+
+  "optionsTitle": { "message": "Später – Settings" },
+  "sectionConnection": { "message": "Remember The Milk connection" },
+  "apiKeyHelp": { "message": "Use your own API key and shared secret from rememberthemilk.com/services/api/keys.rtm. The README explains how to get them." },
+  "apiKeyLabel": { "message": "API key" },
+  "secretLabel": { "message": "Shared secret" },
+  "connectButton": { "message": "Connect to Remember The Milk" },
+  "authHint": { "message": "A Remember The Milk tab has opened. Allow access there, then click the button below." },
+  "authorizedButton": { "message": "I have allowed access" },
+  "disconnectButton": { "message": "Disconnect" },
+  "statusNotConnected": { "message": "Not connected." },
+  "statusConnected": {
+    "message": "Connected as $USER$.",
+    "placeholders": { "user": { "content": "$1" } }
+  },
+  "errorCredentialsMissing": { "message": "Please enter the API key and the shared secret." },
+
+  "sectionList": { "message": "List" },
+  "listLabel": { "message": "Add tasks to this list" },
+  "listPlaceholder": { "message": "– Choose a list –" },
+  "listNeedsConnection": { "message": "Connect first to load your lists." },
+
+  "sectionBehavior": { "message": "Behavior" },
+  "confirmLabel": { "message": "Show a confirmation popup before adding (lets you correct type and title)" },
+  "confirmHelp": { "message": "If turned off, one click on the toolbar button adds the task right away." },
+
+  "sectionTemplates": { "message": "Task names and tags" },
+  "templatesHelp": { "message": "%s is replaced by the title of the page." },
+  "presetLabel": { "message": "Fill in preset" },
+  "presetChoose": { "message": "– Choose –" },
+  "presetDe": { "message": "Deutsch" },
+  "presetEn": { "message": "English" },
+  "templateLabel": { "message": "Task name" },
+  "tagLabel": { "message": "Tag" },
+  "templateInvalid": { "message": "Every task name must contain %s exactly once." },
+  "saveButton": { "message": "Save" },
+  "saved": { "message": "Saved." },
+
+  "sectionIphone": { "message": "Values for the iPhone Shortcut" },
+  "iphoneHelp": { "message": "Enter these values when you import the Shortcut. Keep them private, never share or commit them." },
+  "tokenLabel": { "message": "Auth token" },
+  "listIdLabel": { "message": "List ID" },
+  "copyButton": { "message": "Copy" },
+  "copied": { "message": "Copied." },
+
+  "titleLabel": { "message": "Title" },
+  "previewLabel": { "message": "Task" },
+  "addButton": { "message": "Add" },
+  "loading": { "message": "Looking up the title …" },
+  "added": { "message": "Added ✓" },
+  "notConfigured": { "message": "Please connect to Remember The Milk and choose a list first." },
+  "openSettings": { "message": "Open settings" },
+  "unsupportedPage": { "message": "Only web pages (http/https) can be saved." },
+
+  "notifyAdded": { "message": "Added to Remember The Milk" },
+  "notifyFailed": { "message": "Could not add the task" }
+}
