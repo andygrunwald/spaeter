@@ -2,6 +2,7 @@
   "appName": { "message": "Später" },
   "appDescription": { "message": "Save links to read, watch or listen to later as tasks in Remember The Milk." },
   "actionTitle": { "message": "Save for later" },
+  "sourceCode": { "message": "Später is an open source project by Andy Grunwald. The source code is available at" },
   "attribution": { "message": "This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk." },
 
   "typeRead": { "message": "Read" },

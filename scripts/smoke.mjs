@@ -41,8 +41,14 @@ for (const lang of LANGUAGES) {
     const options = await openPage(browser, `${base}/options.html`, errors);
     const heading = await options.$eval('h1', (element) => element.textContent.trim());
     check(heading === messages.optionsTitle.message, `[${lang}] options page heading is "${heading}"`);
-    const footer = await options.$eval('footer', (element) => element.textContent);
-    check(footer === messages.attribution.message, `[${lang}] options page shows the RTM attribution`);
+    const attribution = await options.$eval('footer [data-i18n="attribution"]', (element) => element.textContent);
+    check(attribution === messages.attribution.message, `[${lang}] options page shows the RTM attribution`);
+    const sourceCode = await options.$eval('footer [data-i18n="sourceCode"]', (element) => element.textContent);
+    const sourceLink = await options.$eval('footer a', (element) => element.href);
+    check(
+      sourceCode === messages.sourceCode.message && sourceLink === 'https://github.com/andygrunwald/spaeter',
+      `[${lang}] options page links to the source code`,
+    );
     const template = await options.$eval('input[name="read.template"]', (element) => element.value);
     check(template === '"%s" lesen', `[${lang}] default read template is "${template}"`);
     const preset = await options.$eval('#preset', (element) => element.value);

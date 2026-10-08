@@ -2,6 +2,7 @@
   "appName": { "message": "Später" },
   "appDescription": { "message": "Speichere Links zum späteren Lesen, Ansehen oder Anhören als Aufgaben in Remember The Milk." },
   "actionTitle": { "message": "Für später merken" },
+  "sourceCode": { "message": "Später ist ein Open-Source-Projekt von Andy Grunwald. Der Quellcode ist verfügbar unter" },
   "attribution": { "message": "Dieses Produkt nutzt die Remember The Milk API, wird aber von Remember The Milk weder unterstützt noch zertifiziert." },
 
   "typeRead": { "message": "Lesen" },
