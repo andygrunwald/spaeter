@@ -68,7 +68,7 @@ test('addTask runs timeline → add → setURL → addTags without Smart Add', a
   );
   await addTask({ listId: 'L1', name: '"Title" lesen', url: 'https://example.com', tag: 'lesen' }, creds);
 
-  const strip = ({ api_key, auth_token, format, api_sig, ...rest }) => rest; // eslint-disable-line no-unused-vars
+  const strip = ({ api_key, auth_token, format, api_sig, ...rest }) => rest;
   assert.deepEqual(requests.map(strip), [
     { method: 'rtm.timelines.create' },
     { method: 'rtm.tasks.add', timeline: 'T1', list_id: 'L1', name: '"Title" lesen' },

@@ -66,7 +66,7 @@ test('signature strings match what rtm.js signs', async () => {
     globalThis.fetch = realFetch;
   }
 
-  for (const { api_sig: _sig, ...params } of requests) { // eslint-disable-line no-unused-vars
+  for (const { api_sig: _sig, ...params } of requests) {
     const expected = `{secret}${Object.keys(params).sort().map((key) => key + params[key]).join('')}`;
     assert.equal(row(params.method, 2)[1], expected, `signature string for ${params.method}`);
   }
