@@ -2,8 +2,12 @@
 
 ## Setup
 
-Requirements: Node.js (version in [`.node-version`](.node-version)), `make`, `git`, and
-`zip` for packaging.
+Requirements:
+
+- Node.js (version in [`.node-version`](.node-version))
+- `make`
+- `git`
+- `zip` (for packaging)
 
 ```sh
 make install   # npm ci, also downloads Chrome for Testing for the smoke test
@@ -57,7 +61,7 @@ tests/                   node:test unit tests and the iOS guide consistency test
 
 Plain ES modules, no bundler and no build step: the `extension` folder is loaded as is.
 
-### Data flow
+### Google Chrome Extension: Data flow
 
 1. The toolbar button is clicked. With the confirmation popup on, `popup.html` opens;
    otherwise `background.js` receives `action.onClicked`. `background.js` switches between
@@ -84,18 +88,6 @@ Plain ES modules, no bundler and no build step: the `extension` folder is loaded
 - Docs: <https://www.rememberthemilk.com/services/api/>
 
 ## CI
-
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on pushes to `main` and on
-pull requests:
-
-| Job                  | Checks                                                                       |
-|----------------------|------------------------------------------------------------------------------|
-| `lint`               | `npm run lint`                                                               |
-| `test`               | `npm test`, including `tests/ios-guide.test.js`                              |
-| `validate-extension` | `npm run validate`, vendored md5 is current, uploads `extension/` as artifact |
-| `smoke`              | `npm run smoke` in headless Chrome, uploads screenshots                      |
-| `docs`               | Link check of all Markdown files (lychee)                                    |
-| `renovate-config`    | `renovate-config-validator --strict`                                         |
 
 The iPhone Shortcuts can't run in CI. Instead, `tests/ios-guide.test.js` reads
 `ios/SHORTCUT.md` and checks that its host regexes, templates and tags, per-call
@@ -156,9 +148,3 @@ replace `assets/emoji_u1f42e.svg`, update the script and the license note in
 `make zip` creates `dist/spaeter.zip` with the contents of `extension/`. CI uploads the
 same folder as the `spaeter-extension` artifact. Bump `version` in
 `extension/manifest.json` and `package.json` together.
-
-## Secrets
-
-Never commit RTM API keys, shared secrets, auth tokens or frobs: see
-[AGENTS.md](AGENTS.md). Tests use RTM's documented example secret `BANANAS` and
-placeholders such as `YOUR_API_KEY`.
