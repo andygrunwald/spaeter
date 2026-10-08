@@ -1,0 +1,107 @@
+// Setup: log in to Remember The Milk, choose list and language, save spaeter.json.
+// Only runs when the Shortcut is started directly: the login opens Safari, which would
+// end a Shortcut running inside another app's Share Sheet.
+
+// Desktop auth flow: getFrob → user allows access in Safari → getToken.
+// Signature strings: secret + all parameters as keyvalue, keys sorted alphabetically.
+if @mode == "setup" {
+    @apiKey = prompt("RTM API key", nil, "{@apiKey}")
+    @secret = prompt("RTM shared secret", nil, "{@secret}")
+
+    const frobSigText = text("{@secret}api_key{@apiKey}formatjsonmethodrtm.auth.getFrob")
+    const frobSig = hash(frobSigText)
+    const frobResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+        "api_key": "{@apiKey}",
+        "format": "json",
+        "method": "rtm.auth.getFrob",
+        "api_sig": "{frobSig}"
+    })
+    const frobData = getDictionary(frobResponse)
+    const frobStat = getValue(frobData, "rsp.stat")
+    if frobStat.text != "ok" {
+        const frobError = getValue(frobData, "rsp.err.msg")
+        alert("{frobError}", "Remember The Milk")
+        stop()
+    }
+    const frob = getValue(frobData, "rsp.frob")
+
+    const authSigText = text("{@secret}api_key{@apiKey}frob{frob}permswrite")
+    const authSig = hash(authSigText)
+    openURL("https://www.rememberthemilk.com/services/auth/?api_key={@apiKey}&perms=write&frob={frob}&api_sig={authSig}")
+    waitToReturn()
+    confirm("Did you allow access in Safari?", "Später")
+
+    const tokenSigText = text("{@secret}api_key{@apiKey}formatjsonfrob{frob}methodrtm.auth.getToken")
+    const tokenSig = hash(tokenSigText)
+    const tokenResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+        "api_key": "{@apiKey}",
+        "format": "json",
+        "frob": "{frob}",
+        "method": "rtm.auth.getToken",
+        "api_sig": "{tokenSig}"
+    })
+    const tokenData = getDictionary(tokenResponse)
+    const tokenStat = getValue(tokenData, "rsp.stat")
+    if tokenStat.text != "ok" {
+        const tokenError = getValue(tokenData, "rsp.err.msg")
+        alert("{tokenError}", "Remember The Milk")
+        stop()
+    }
+    @token = getValue(tokenData, "rsp.auth.token")
+}
+
+if @mode == "setup" || @mode == "change" {
+    const listsSigText = text("{@secret}api_key{@apiKey}auth_token{@token}formatjsonmethodrtm.lists.getList")
+    const listsSig = hash(listsSigText)
+    const listsResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+        "api_key": "{@apiKey}",
+        "auth_token": "{@token}",
+        "format": "json",
+        "method": "rtm.lists.getList",
+        "api_sig": "{listsSig}"
+    })
+    const listsData = getDictionary(listsResponse)
+    const listsStat = getValue(listsData, "rsp.stat")
+    if listsStat.text != "ok" {
+        const listsError = getValue(listsData, "rsp.err.msg")
+        alert("{listsError}", "Remember The Milk")
+        stop()
+    }
+
+    // Only lists that can hold new tasks: no smart, archived or deleted lists.
+    const allLists = getValue(listsData, "rsp.lists.list")
+    @lists = {}
+    for item in allLists {
+        const list = getDictionary(@item)
+        const smart = getValue(list, "smart")
+        const archived = getValue(list, "archived")
+        const deleted = getValue(list, "deleted")
+        if smart.text == "0" && archived.text == "0" && deleted.text == "0" {
+            const listName = getValue(list, "name")
+            const listIdValue = getValue(list, "id")
+            @lists = setValue(@lists, "{listName}", "{listIdValue}")
+        }
+    }
+    const listNames = getKeys(@lists)
+    const chosenList = chooseFromList(listNames, "Which list should the tasks go to?")
+    const listsByName = getDictionary(@lists)
+    @listId = getValue(listsByName, "{chosenList}")
+
+    #include 'generated/presets.cherri'
+
+    const newConfig = {
+        "api_key": "{@apiKey}",
+        "secret": "{@secret}",
+        "auth_token": "{@token}",
+        "list_id": "{@listId}",
+        "read_template": "{@readTemplate}",
+        "read_tag": "{@readTag}",
+        "watch_template": "{@watchTemplate}",
+        "watch_tag": "{@watchTag}",
+        "listen_template": "{@listenTemplate}",
+        "listen_tag": "{@listenTag}"
+    }
+    saveFile("spaeter.json", newConfig, true)
+    showNotification("Share a link and pick Später.", "Setup complete")
+    stop()
+}

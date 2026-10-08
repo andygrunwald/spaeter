@@ -14,7 +14,8 @@
     "validate": "node scripts/validate-extension.mjs",
     "vendor": "node scripts/vendor.mjs",
     "icons": "node scripts/build-icons.mjs",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "shortcut-rules": "node scripts/build-shortcut-rules.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

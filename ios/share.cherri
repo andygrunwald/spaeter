@@ -1,0 +1,145 @@
+// Share: classify the link, look up its title and add it as a task to Remember The Milk.
+
+if !@token || !@listId {
+    alert("Open the Shortcuts app and run Später once to set it up.", "Später is not set up yet")
+    stop()
+}
+
+const urls = getURLs(@link)
+const url = getFirstItem(urls)
+const host = getURLDetail("{url}", "Host")
+
+// Sets @type to "read", "watch" or "listen", generated from extension/lib/rules.js.
+#include 'generated/classify.cherri'
+
+// Title: oEmbed for YouTube, Vimeo and Spotify (clean titles), otherwise og:title or <title>.
+const encodedURL = urlEncode("{url}")
+@title = ""
+const youtubeMatch = matchText('(?i)(^|\.)(youtube\.com|youtu\.be)$', host)
+if youtubeMatch {
+    const youtube = downloadURL("https://www.youtube.com/oembed?format=json&url={encodedURL}")
+    const youtubeData = getDictionary(youtube)
+    @title = getValue(youtubeData, "title")
+}
+const vimeoMatch = matchText('(?i)(^|\.)vimeo\.com$', host)
+if vimeoMatch {
+    const vimeo = downloadURL("https://vimeo.com/api/oembed.json?url={encodedURL}")
+    const vimeoData = getDictionary(vimeo)
+    @title = getValue(vimeoData, "title")
+}
+const spotifyMatch = matchText('(?i)(^|\.)spotify\.com$', host)
+if spotifyMatch {
+    const spotify = downloadURL("https://open.spotify.com/oembed?url={encodedURL}")
+    const spotifyData = getDictionary(spotify)
+    @title = getValue(spotifyData, "title")
+}
+if !@title {
+    const page = downloadURL("{url}")
+    const html = getText(page)
+    const ogMatch = matchText('(?is)<meta[^>]*property=["\x27]og:title["\x27][^>]*content=["\x27]([^"\x27]*)["\x27]', html)
+    @title = getMatchGroup(ogMatch, 1)
+    if !@title {
+        const titleMatch = matchText('(?is)<title[^>]*>([^<]*)</title>', html)
+        @title = getMatchGroup(titleMatch, 1)
+    }
+    // Decodes HTML entities such as &amp;.
+    const richTitle = getRichTextFromHTML("{@title}")
+    @title = getText(richTitle)
+}
+
+const template = getValue(config, "{@type}_template")
+const tag = getValue(config, "{@type}_tag")
+const name = replaceText("%s", "{@title}", "{template}")
+
+// Four signed calls: timeline → add → setURL → addTags. Smart Add is not used on purpose:
+// it would turn "#", "!1", "^" or "//" in titles into lists, tags, priorities or notes.
+const timelineSigText = text("{@secret}api_key{@apiKey}auth_token{@token}formatjsonmethodrtm.timelines.create")
+const timelineSig = hash(timelineSigText)
+const timelineResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+    "api_key": "{@apiKey}",
+    "auth_token": "{@token}",
+    "format": "json",
+    "method": "rtm.timelines.create",
+    "api_sig": "{timelineSig}"
+})
+const timelineData = getDictionary(timelineResponse)
+const timelineStat = getValue(timelineData, "rsp.stat")
+if timelineStat.text != "ok" {
+    const timelineError = getValue(timelineData, "rsp.err.msg")
+    alert("{timelineError}", "Remember The Milk")
+    stop()
+}
+const timeline = getValue(timelineData, "rsp.timeline")
+
+const addSigText = text("{@secret}api_key{@apiKey}auth_token{@token}formatjsonlist_id{@listId}methodrtm.tasks.addname{name}timeline{timeline}")
+const addSig = hash(addSigText)
+const addResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+    "api_key": "{@apiKey}",
+    "auth_token": "{@token}",
+    "format": "json",
+    "list_id": "{@listId}",
+    "method": "rtm.tasks.add",
+    "name": "{name}",
+    "timeline": "{timeline}",
+    "api_sig": "{addSig}"
+})
+const addData = getDictionary(addResponse)
+const addStat = getValue(addData, "rsp.stat")
+if addStat.text != "ok" {
+    const addError = getValue(addData, "rsp.err.msg")
+    alert("{addError}", "Remember The Milk")
+    stop()
+}
+// RTM returns a single task series as an object and several as a list. Shortcuts treats
+// those differently, so the IDs are read from the raw JSON, which works for both.
+const addJSON = getText(addResponse)
+const seriesMatch = matchText('"taskseries":\[?\{[^{]*?"id":"(\d+)"', addJSON)
+const seriesId = getMatchGroup(seriesMatch, 1)
+const taskMatch = matchText('"task":\[?\{[^}]*?"id":"(\d+)"', addJSON)
+const taskId = getMatchGroup(taskMatch, 1)
+
+const urlSigText = text("{@secret}api_key{@apiKey}auth_token{@token}formatjsonlist_id{@listId}methodrtm.tasks.setURLtask_id{taskId}taskseries_id{seriesId}timeline{timeline}url{url}")
+const urlSig = hash(urlSigText)
+const urlResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+    "api_key": "{@apiKey}",
+    "auth_token": "{@token}",
+    "format": "json",
+    "list_id": "{@listId}",
+    "method": "rtm.tasks.setURL",
+    "task_id": "{taskId}",
+    "taskseries_id": "{seriesId}",
+    "timeline": "{timeline}",
+    "url": "{url}",
+    "api_sig": "{urlSig}"
+})
+const urlData = getDictionary(urlResponse)
+const urlStat = getValue(urlData, "rsp.stat")
+if urlStat.text != "ok" {
+    const urlError = getValue(urlData, "rsp.err.msg")
+    alert("{urlError}", "Remember The Milk")
+    stop()
+}
+
+const tagsSigText = text("{@secret}api_key{@apiKey}auth_token{@token}formatjsonlist_id{@listId}methodrtm.tasks.addTagstags{tag}task_id{taskId}taskseries_id{seriesId}timeline{timeline}")
+const tagsSig = hash(tagsSigText)
+const tagsResponse = formRequest("https://api.rememberthemilk.com/services/rest/", "POST", {
+    "api_key": "{@apiKey}",
+    "auth_token": "{@token}",
+    "format": "json",
+    "list_id": "{@listId}",
+    "method": "rtm.tasks.addTags",
+    "tags": "{tag}",
+    "task_id": "{taskId}",
+    "taskseries_id": "{seriesId}",
+    "timeline": "{timeline}",
+    "api_sig": "{tagsSig}"
+})
+const tagsData = getDictionary(tagsResponse)
+const tagsStat = getValue(tagsData, "rsp.stat")
+if tagsStat.text != "ok" {
+    const tagsError = getValue(tagsData, "rsp.err.msg")
+    alert("{tagsError}", "Remember The Milk")
+    stop()
+}
+
+showNotification("{name}", "Später ✓")

@@ -1,0 +1,51 @@
+/*
+Später: save links to read, watch or listen to later as Remember The Milk tasks.
+
+Source of ios/Später.shortcut, compiled with Cherri (https://cherrilang.org).
+Build with `make shortcuts` on a Mac, see DEVELOPMENT.md. Never put secrets here:
+credentials are entered during the setup and stored in iCloud Drive/Shortcuts/spaeter.json.
+
+Started from the Share Sheet, it adds the shared link (share.cherri).
+Started directly, it shows a menu for the setup and settings (setup.cherri).
+*/
+
+#define name Später
+#define inputs url, webpage, text
+#define from sharesheet
+
+#include 'actions/crypto'
+#include 'actions/documents'
+#include 'actions/text'
+#include 'actions/web'
+
+// Settings written by the setup. The file is missing until the setup ran once.
+const configFile = getFile("spaeter.json", nil, false)
+const config = getDictionary(configFile)
+@apiKey = getValue(config, "api_key")
+@secret = getValue(config, "secret")
+@token = getValue(config, "auth_token")
+@listId = getValue(config, "list_id")
+
+// "share" adds @link as a task, "setup" logs in, "change" only picks list and language.
+@link = ShortcutInput
+@mode = "share"
+if !@link {
+    @mode = "setup"
+    if @token && @listId {
+        menu "Später" {
+            item "Add link from clipboard":
+                @mode = "clipboard"
+            item "Change list and language":
+                @mode = "change"
+            item "Set up (log in to Remember The Milk)":
+                @mode = "setup"
+        }
+    }
+}
+if @mode == "clipboard" {
+    @link = Clipboard
+    @mode = "share"
+}
+
+#include 'setup.cherri'
+#include 'share.cherri'
