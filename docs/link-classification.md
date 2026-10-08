@@ -1,4 +1,4 @@
-# How links are classified
+# FAQ: How links are classified
 
 | Type   | Links from                                                                         |
 |--------|------------------------------------------------------------------------------------|

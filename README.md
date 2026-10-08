@@ -29,7 +29,7 @@ The link is stored as the task's URL, and the task has no due date.
 
 ## Documentation
 
-- [How links are classified](docs/link-classification.md)
+- [FAQ: How links are classified](docs/link-classification.md)
 - [Setup Prerequisite: Getting an RTM API key](docs/setup-rtm-api-key.md)
 - [Setup: Google Chrome Extension](docs/setup-google-chrome-extension.md)
 - [Setup: iPhone / iOS](docs/setup-iphone.md)

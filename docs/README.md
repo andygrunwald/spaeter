@@ -1,6 +1,6 @@
 # Documentation
 
-1. [How links are classified](link-classification.md): which links count as read, watch
+1. [FAQ: How links are classified](link-classification.md): which links count as read, watch
    or listen.
 2. [Setup Prerequisite: Getting an RTM API key](setup-rtm-api-key.md): the personal
    Remember The Milk API key both setups need.
