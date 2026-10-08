@@ -21,7 +21,8 @@ The link is stored as the task's URL, and the task has no due date:
 *Später* comes in two flavours:
 
 | Google Chrome extension | iPhone Share functionality |
-|-------------------------|----------------------------|
+|-------------------------|:--------------------------:|
+| ![Chrome Web Store: coming soon](https://img.shields.io/badge/Chrome%20Web%20Store-coming%20soon-lightgrey?style=for-the-badge&logo=chromewebstore&logoColor=white) | [![Install Später Shortcut](https://img.shields.io/badge/Install-Sp%C3%A4ter%20Shortcut-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/andygrunwald/spaeter/raw/main/ios/Sp%C3%A4ter.shortcut) |
 | A button next to the address bar. Click it and the task will be created. | Share a link from Safari, YouTube, Spotify or any other app and pick *Später*. |
 | ![Später popup in Google Chrome](docs/google-chrome-extension.png) | <img src="docs/ios-share.png" alt="Später in the iPhone Share Sheet" width="250"> |
 
