@@ -39,6 +39,7 @@ Task name and tag depend on the consumption category (examples with the English 
 - [Setup Prerequisite: Getting an RTM API key](docs/setup-rtm-api-key.md)
 - [Setup: Google Chrome Extension](docs/setup-google-chrome-extension.md)
 - [Setup: iPhone / iOS](docs/setup-iphone.md)
+- [Architecture and data flow](docs/architecture.md)
 
 All chapters: [docs/README.md](docs/README.md)
 

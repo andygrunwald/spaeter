@@ -8,6 +8,8 @@
    extension and connect it to Remember The Milk.
 4. [Setup: iPhone / iOS](setup-iphone.md): install and set up the Apple Shortcut for the
    Share Sheet.
+5. [Architecture and data flow](architecture.md): diagrams of how the Chrome extension,
+   the iPhone Shortcut and Remember The Milk work together.
 
 ## For developers
 

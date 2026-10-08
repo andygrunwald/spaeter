@@ -40,6 +40,8 @@ Logs from the background worker are under **service worker** on that card.
 
 ## Architecture
 
+Diagrams of the components and data flows: [docs/architecture.md](docs/architecture.md).
+
 ```text
 extension/
   manifest.json          MV3 manifest; strings come from _locales
