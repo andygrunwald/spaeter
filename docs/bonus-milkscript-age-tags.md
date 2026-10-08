@@ -27,14 +27,10 @@ with today:
 A task has at most one of these tags. When a task moves up an age class, the script
 removes the old tag and adds the new one. Other tags such as `read` stay untouched.
 
-Why `1+month-old` and not `>1 month old`? Remember The Milk tags can't contain spaces and
-only allow letters, numbers and `+ - . @ _`, so `+` stands in for "more than".
-
 ## Requirements
 
 - A Remember The Milk **Pro** account: MilkScript is
-  [available exclusively for Pro users](https://blog.rememberthemilk.com/introducing-milkscript/),
-  and so are tag colors.
+  [available exclusively for Pro users](https://blog.rememberthemilk.com/introducing-milkscript/).
 - The list name in the script matches the list *Später* adds tasks to. Change
   `LIST_NAME` if yours is called differently.
 
@@ -106,9 +102,6 @@ the tasks get older:
 | `1+month-old`  | very light orange / peach   |
 | `2+months-old` | orange                      |
 | `3+months-old` | strong red                  |
-
-Open the tag under **Tags** in the left menu, edit the tag and pick the closest color
-from Remember The Milk's palette.
 
 ## Caveat: you have to run it yourself
 
