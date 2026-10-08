@@ -46,6 +46,23 @@ function renderTemplates(templates) {
   }
 }
 
+function readTemplates() {
+  const fields = $('templates').elements;
+  return Object.fromEntries(
+    TYPES.map((type) => [
+      type,
+      { template: fields[`${type}.template`].value.trim(), tag: fields[`${type}.tag`].value.trim() },
+    ]),
+  );
+}
+
+// The preset whose values the template fields currently hold, or '' for custom values.
+function matchingPreset(templates) {
+  const matches = (preset) =>
+    TYPES.every((type) => ['template', 'tag'].every((key) => preset[type][key] === templates[type][key]));
+  return Object.keys(PRESETS).find((name) => matches(PRESETS[name])) ?? '';
+}
+
 async function update(patch) {
   await saveSettings(patch);
   Object.assign(settings, patch);
@@ -89,18 +106,15 @@ $('confirm').addEventListener('change', (event) => update({ confirm: event.targe
 
 $('preset').addEventListener('change', (event) => {
   if (event.target.value) renderTemplates(PRESETS[event.target.value]);
-  event.target.value = '';
+});
+
+$('templates').addEventListener('input', () => {
+  $('preset').value = matchingPreset(readTemplates());
 });
 
 $('templates').addEventListener('submit', async (event) => {
   event.preventDefault();
-  const fields = event.target.elements;
-  const templates = Object.fromEntries(
-    TYPES.map((type) => [
-      type,
-      { template: fields[`${type}.template`].value.trim(), tag: fields[`${type}.tag`].value.trim() },
-    ]),
-  );
+  const templates = readTemplates();
   if (!TYPES.every((type) => isValidTemplate(templates[type].template))) {
     return showStatus($('templatesStatus'), t('templateInvalid'), true);
   }
@@ -114,6 +128,7 @@ $('apiKey').value = settings.apiKey;
 $('secret').value = settings.secret;
 $('confirm').checked = settings.confirm;
 renderTemplates(settings.templates);
+$('preset').value = matchingPreset(settings.templates);
 renderConnection();
 await renderLists();
 

@@ -45,6 +45,15 @@ for (const lang of LANGUAGES) {
     check(footer === messages.attribution.message, `[${lang}] options page shows the RTM attribution`);
     const template = await options.$eval('input[name="read.template"]', (element) => element.value);
     check(template === '"%s" lesen', `[${lang}] default read template is "${template}"`);
+    const preset = await options.$eval('#preset', (element) => element.value);
+    check(preset === 'de', `[${lang}] preset dropdown shows the saved preset "de"`);
+    await options.select('#preset', 'en');
+    const selected = await options.$eval('#preset', (element) => element.value);
+    const filled = await options.$eval('input[name="read.template"]', (element) => element.value);
+    check(selected === 'en' && filled === 'Read "%s"', `[${lang}] choosing a preset fills the fields and stays selected`);
+    await options.type('input[name="read.tag"]', 'x');
+    const afterEdit = await options.$eval('#preset', (element) => element.value);
+    check(afterEdit === '', `[${lang}] editing a field resets the preset dropdown`);
     if (screenshots) await options.screenshot({ path: `${screenshots}/options-${lang}.png`, fullPage: true });
 
     // Not connected yet, so the popup has to point to the settings.
