@@ -1,0 +1,31 @@
+{
+  "name": "spaeter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Save links to read, watch or listen to later as tasks in your to-do app.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "eslint . && markdownlint-cli2",
+    "test": "node --test \"tests/*.test.js\"",
+    "validate": "node scripts/validate-extension.mjs",
+    "vendor": "node scripts/vendor.mjs",
+    "icons": "node scripts/build-icons.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "blueimp-md5": "2.19.0",
+    "eslint": "10.12.0",
+    "globals": "17.13.0",
+    "markdownlint-cli2": "0.23.3",
+    "puppeteer": "25.12.0",
+    "sharp": "0.35.5"
+  },
+  "allowScripts": {
+    "puppeteer": true
+  }
+}

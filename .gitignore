@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+
+# Never commit secrets (see AGENTS.md)
+.env
+.env.*
+*.pem
+# Exported shortcuts may contain secrets; commit signed, secret-free files deliberately with `git add -f`
+*.shortcut
