@@ -110,7 +110,7 @@ signature strings and worked example match what the extension code produces.
    to `host_permissions` in `manifest.json`, and to the oEmbed table in `ios/SHORTCUT.md`.
 4. Update the regex for the type in `ios/SHORTCUT.md` (Type detection table). `make test`
    tells you the exact expected regex if it doesn't match.
-5. Update the "How links are classified" table in the README.
+5. Update the table in [`docs/link-classification.md`](docs/link-classification.md).
 6. Run `make check`.
 
 ## Adding a language
