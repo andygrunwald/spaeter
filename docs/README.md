@@ -10,6 +10,8 @@
    Share Sheet.
 5. [Architecture and data flow](architecture.md): diagrams of how the Chrome extension,
    the iPhone Shortcut and Remember The Milk work together.
+6. [Bonus: Age tags with MilkScript](bonus-milkscript-age-tags.md): tag tasks in your
+   Read/Watch/Listen list by age, to keep it clean.
 
 ## For developers
 
