@@ -53,7 +53,7 @@ file, and revoke its access in Remember The Milk under **Settings → Apps**.
 | `Login failed / Invalid auth token (RTM error 98)` | Access was revoked. Run **Set up** again. |
 | `Invalid API Key (RTM error 100)` | The API key is wrong or not yet approved by RTM. |
 | `Invalid frob - did you authenticate? (RTM error 101)` | Access wasn't allowed in Safari before going back. Run **Set up** again. |
-| The task title is empty or wrong | The website blocks requests from Shortcuts. Edit the task in Remember The Milk. |
+| The task name contains the link instead of the page title | The page couldn't be read, for example because it blocks requests from Shortcuts. Edit the task in Remember The Milk. |
 | *Später* is missing in an app's Share Sheet | Turn on **Show in Share Sheet** in the details of ***Später***. |
 
 Also using Chrome? See [Setup: Google Chrome Extension](setup-google-chrome-extension.md).

@@ -1,0 +1,59 @@
+// Title lookup: expects the constants `url` and `host`, sets @title. Never leaves it empty.
+// Verified on macOS with `shortcuts run`; see DEVELOPMENT.md.
+//
+// Shortcuts treats an empty text as "has any value", so `if !@title` can't detect a missing
+// title. Each step therefore checks for a non-space character with Match Text instead.
+
+// oEmbed returns clean titles for YouTube, Vimeo and Spotify.
+const encodedURL = urlEncode("{url}")
+@title = ""
+const youtubeMatch = matchText('(?i)(^|\.)(youtube\.com|youtu\.be)$', host)
+if youtubeMatch {
+    const youtube = downloadURL("https://www.youtube.com/oembed?format=json&url={encodedURL}")
+    const youtubeData = getDictionary(youtube)
+    @title = getValue(youtubeData, "title")
+}
+const vimeoMatch = matchText('(?i)(^|\.)vimeo\.com$', host)
+if vimeoMatch {
+    const vimeo = downloadURL("https://vimeo.com/api/oembed.json?url={encodedURL}")
+    const vimeoData = getDictionary(vimeo)
+    @title = getValue(vimeoData, "title")
+}
+const spotifyMatch = matchText('(?i)(^|\.)spotify\.com$', host)
+if spotifyMatch {
+    const spotify = downloadURL("https://open.spotify.com/oembed?url={encodedURL}")
+    const spotifyData = getDictionary(spotify)
+    @title = getValue(spotifyData, "title")
+}
+
+// Safari Reader: decoded titles, often without the site name suffix.
+const hasOEmbedTitle = matchText('\S', "{@title}")
+if !hasOEmbedTitle {
+    const article = getArticle("{url}")
+    @title = getArticleDetail(article, "Title")
+}
+
+// <title> from the page source. The download is renamed to .txt first: otherwise
+// "Get Text" returns the rendered page text, without any tags to match.
+const hasReaderTitle = matchText('\S', "{@title}")
+if !hasReaderTitle {
+    const page = downloadURL("{url}")
+    const source = setName(page, "page.txt")
+    const html = getText(source)
+    const titleMatch = matchText('(?is)<title[^>]*>([^<]*)</title>', html)
+    const rawTitle = getMatchGroup(titleMatch, 1)
+    // "Make Rich Text from HTML" returns empty text here, so decode common entities directly.
+    const decoded1 = replaceText("&amp;", "&", "{rawTitle}")
+    const decoded2 = replaceText("&quot;", "\"", "{decoded1}")
+    const decoded3 = replaceText("&#39;", "'", "{decoded2}")
+    const decoded4 = replaceText("&#039;", "'", "{decoded3}")
+    const decoded5 = replaceText("&lt;", "<", "{decoded4}")
+    const decoded6 = replaceText("&gt;", ">", "{decoded5}")
+    @title = trimWhitespace("{decoded6}")
+}
+
+// Like the Chrome extension: rather the URL than an empty title.
+const hasSourceTitle = matchText('\S', "{@title}")
+if !hasSourceTitle {
+    @title = "{url}"
+}

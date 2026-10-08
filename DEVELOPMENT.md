@@ -61,6 +61,7 @@ ios/
   spaeter.cherri         iPhone Shortcut entry point (Cherri source)
   setup.cherri           setup: RTM login, list and language, writes spaeter.json
   share.cherri           Share Sheet: classify, look up the title, add the task
+  title.cherri           title lookup: oEmbed, Safari Reader, page <title>, URL
   generated/             includes generated from extension/lib/rules.js (git-ignored)
   Später.shortcut        signed Shortcut built by `make shortcuts`, do not edit
   shortcuts.lock         hash of the inputs the signed Shortcut was built from
@@ -129,6 +130,11 @@ export the `.shortcut` file by hand; change the sources and rebuild it.
   runs inside another app's Share Sheet.
 - `ios/share.cherri` checks that the setup ran, classifies the link, looks up its title
   and makes the four signed RTM calls, like `addTask()` in `extension/lib/rtm.js`.
+- `ios/title.cherri` looks up the title: oEmbed for YouTube, Vimeo and Spotify, then
+  Safari Reader, then the page's `<title>`, and the URL as a last resort.
+- Two Shortcuts behaviours to keep in mind: an empty text counts as "has any value", so
+  emptiness is checked with Match Text; and "Get Text" on a downloaded web page returns the
+  rendered text, so the download is renamed to `.txt` to read its source.
 - `ios/generated/classify.cherri` and `ios/generated/presets.cherri` are generated from
   `extension/lib/rules.js` by `scripts/build-shortcut-rules.mjs`, so both clients classify
   links and name tasks the same way.
@@ -149,6 +155,16 @@ export the `.shortcut` file by hand; change the sources and rebuild it.
 Cherri always runs with `--skip-sign`: if macOS signing fails, it would otherwise upload
 the Shortcut to a third-party signing service. `make shortcuts-compile` compiles without
 signing on any OS; CI runs it to catch errors in the sources.
+
+### Testing on a Mac
+
+Shortcuts also runs on macOS, so logic can be checked without an iPhone. Compile a small
+wrapper Shortcut that includes the file under test (for example `ios/title.cherri`) and
+ends with `output(…)`, sign it, import it once, and run it from the terminal:
+
+```sh
+shortcuts run "<name>" --input-path url.txt --output-path out --output-type public.plain-text
+```
 
 ### Checks
 

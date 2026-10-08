@@ -12,40 +12,8 @@ const host = getURLDetail("{url}", "Host")
 // Sets @type to "read", "watch" or "listen", generated from extension/lib/rules.js.
 #include 'generated/classify.cherri'
 
-// Title: oEmbed for YouTube, Vimeo and Spotify (clean titles), otherwise og:title or <title>.
-const encodedURL = urlEncode("{url}")
-@title = ""
-const youtubeMatch = matchText('(?i)(^|\.)(youtube\.com|youtu\.be)$', host)
-if youtubeMatch {
-    const youtube = downloadURL("https://www.youtube.com/oembed?format=json&url={encodedURL}")
-    const youtubeData = getDictionary(youtube)
-    @title = getValue(youtubeData, "title")
-}
-const vimeoMatch = matchText('(?i)(^|\.)vimeo\.com$', host)
-if vimeoMatch {
-    const vimeo = downloadURL("https://vimeo.com/api/oembed.json?url={encodedURL}")
-    const vimeoData = getDictionary(vimeo)
-    @title = getValue(vimeoData, "title")
-}
-const spotifyMatch = matchText('(?i)(^|\.)spotify\.com$', host)
-if spotifyMatch {
-    const spotify = downloadURL("https://open.spotify.com/oembed?url={encodedURL}")
-    const spotifyData = getDictionary(spotify)
-    @title = getValue(spotifyData, "title")
-}
-if !@title {
-    const page = downloadURL("{url}")
-    const html = getText(page)
-    const ogMatch = matchText('(?is)<meta[^>]*property=["\x27]og:title["\x27][^>]*content=["\x27]([^"\x27]*)["\x27]', html)
-    @title = getMatchGroup(ogMatch, 1)
-    if !@title {
-        const titleMatch = matchText('(?is)<title[^>]*>([^<]*)</title>', html)
-        @title = getMatchGroup(titleMatch, 1)
-    }
-    // Decodes HTML entities such as &amp;.
-    const richTitle = getRichTextFromHTML("{@title}")
-    @title = getText(richTitle)
-}
+// Sets @title, see title.cherri.
+#include 'title.cherri'
 
 const template = getValue(config, "{@type}_template")
 const tag = getValue(config, "{@type}_tag")
