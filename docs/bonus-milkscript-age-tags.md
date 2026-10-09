@@ -19,12 +19,12 @@ with today:
 
 | Task added             | Tag            |
 |------------------------|----------------|
-| less than 1 month ago  | none           |
+| less than 1 month ago  | `quite-new`    |
 | 1 to 2 months ago      | `1+month-old`  |
 | 2 to 3 months ago      | `2+months-old` |
 | more than 3 months ago | `3+months-old` |
 
-A task has at most one of these tags. When a task moves up an age class, the script
+A task has exactly one of these tags. When a task moves up an age class, the script
 removes the old tag and adds the new one. Other tags such as `read` stay untouched.
 
 ## Requirements
@@ -40,10 +40,11 @@ removes the old tag and adds the new one. Other tags such as `read` stay untouch
 // Später: age tags for the Read/Watch/Listen list.
 // Adjust LIST_NAME if your Später tasks go to a different list.
 const LIST_NAME = 'Read/Watch/Listen';
+const QUITE_NEW = 'quite-new';
 const ONE_MONTH = '1+month-old';
 const TWO_MONTHS = '2+months-old';
 const THREE_MONTHS = '3+months-old';
-const AGE_TAGS = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS];
+const AGE_TAGS = [QUITE_NEW, ONE_MONTH, TWO_MONTHS, THREE_MONTHS];
 
 function monthsAgo(months) {
   const date = new Date();
@@ -59,7 +60,7 @@ function ageTag(created) {
   if (created < threeMonthsAgo) return THREE_MONTHS;
   if (created <= twoMonthsAgo) return TWO_MONTHS;
   if (created <= oneMonthAgo) return ONE_MONTH;
-  return null;
+  return QUITE_NEW;
 }
 
 // Make sure all age tags exist, so you can give them colors right after the first run.
@@ -73,7 +74,7 @@ tasks.forEach(task => {
     .map(tag => tag.getName())
     .filter(name => AGE_TAGS.includes(name));
   const stale = current.filter(name => name !== wanted);
-  const missing = wanted !== null && !current.includes(wanted);
+  const missing = !current.includes(wanted);
   if (stale.length > 0) task.removeTags(...stale);
   if (missing) task.addTags(wanted);
   if (stale.length > 0 || missing) updated++;
@@ -89,16 +90,17 @@ console.log('Checked %d task(s) in "%s", updated %d.', tasks.length, LIST_NAME, 
 3. Run it once: in the web or desktop app, click the **MilkScript** button at the top
    right, then **Age tags**. The console shows how many tasks it checked and updated.
 
-You don't need to create the tags yourself: the script creates all three on every run if
+You don't need to create the tags yourself: the script creates all four on every run if
 they don't exist yet.
 
 ## Give the tags colors
 
-MilkScript can't set tag colors, so set them by hand, once. The colors get stronger as
-the tasks get older:
+MilkScript can't set tag colors, so set them by hand, once. New tasks are green, and the
+colors get warmer and stronger as the tasks get older:
 
 | Tag            | Color                       |
 |----------------|-----------------------------|
+| `quite-new`    | light green                 |
 | `1+month-old`  | very light orange / peach   |
 | `2+months-old` | orange                      |
 | `3+months-old` | strong red                  |
