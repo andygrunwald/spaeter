@@ -2,7 +2,7 @@
 
 # Cherri compiles the iPhone Shortcut (ios/*.cherri). Built from source at this tag, because
 # its Go module path prevents `go run …@v2`. Renovate updates it (see renovate.json).
-CHERRI_VERSION := v2.3.0
+CHERRI_VERSION := v2.4.0
 CHERRI := .cache/cherri-$(CHERRI_VERSION)/cherri
 
 help: ## Show available targets
